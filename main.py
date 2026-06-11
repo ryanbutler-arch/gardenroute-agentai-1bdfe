@@ -71,6 +71,12 @@ Watchlists: """ + ", ".join(WATCHLISTS.keys()),
         action="store_true",
         help="Run with synthetic mock data (no live market feed needed)",
     )
+    parser.add_argument(
+        "--no-research",
+        action="store_true",
+        dest="no_research",
+        help="Skip deep web research phase (faster, uses only market data)",
+    )
 
     args = parser.parse_args()
 
@@ -103,7 +109,10 @@ Watchlists: """ + ", ".join(WATCHLISTS.keys()),
 
     for ticker in tickers:
         try:
-            result = analyze_demo(ticker) if args.demo else analyze_ticker(ticker)
+            result = (
+                analyze_demo(ticker) if args.demo
+                else analyze_ticker(ticker, skip_research=args.no_research)
+            )
             results.append(result)
 
             if not args.json:

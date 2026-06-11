@@ -126,6 +126,77 @@ def mock_earnings() -> list:
     ]
 
 
+def mock_research(ticker: str) -> dict:
+    """Simulated deep web research output (replaces live scraping in demo mode)."""
+    return {
+        "ticker": ticker,
+        "sources_queried": ["finviz.com", "duckduckgo_news_search", "marketwatch.com"],
+        "finviz": {
+            "available": True,
+            "market_cap": "2.80T",
+            "pe": "28.50",
+            "forward_pe": "24.10",
+            "peg": "1.80",
+            "eps_ttm": "6.64",
+            "eps_next_year": "+8.21%",
+            "sales_growth": "+4.20%",
+            "eps_growth_qoq": "+7.30%",
+            "insider_own": "2.80%",
+            "short_float": "0.66%",
+            "target_price": "222.50",
+            "rsi": "45.81",
+            "analyst_recom": "1.80",
+            "52w_range": "164.08 - 237.23",
+            "perf_week": "+1.20%",
+            "perf_month": "+4.03%",
+            "perf_ytd": "-3.20%",
+            "perf_year": "+1.76%",
+            "debt_eq": "1.52",
+            "roe": "147.10%",
+            "gross_margin": "44.50%",
+            "oper_margin": "29.80%",
+            "profit_margin": "25.50%",
+            "dividend_yield": "0.55%",
+            "recent_headlines": [
+                {"headline": f"{ticker} Q2 earnings beat on services strength", "url": ""},
+                {"headline": f"AI features drive {ticker} upgrade cycle optimism", "url": ""},
+                {"headline": f"{ticker} China revenue down 8%, management cautious", "url": ""},
+                {"headline": f"Goldman raises {ticker} price target to $240", "url": ""},
+                {"headline": f"{ticker} buyback pace accelerating amid price pullback", "url": ""},
+            ],
+        },
+        "web_news": [
+            {"title": f"{ticker} AI integration strategy praised by analysts", "snippet": "Multiple firms upgraded after AI roadmap presentation", "url": ""},
+            {"title": f"{ticker} faces EU antitrust scrutiny over App Store", "snippet": "Potential fine of up to 10% of global revenue", "url": ""},
+            {"title": f"{ticker} services gross margin hits record 74%", "snippet": "Services now contributes 28% of total revenue", "url": ""},
+            {"title": f"Warren Buffett trims {ticker} position again", "snippet": "Berkshire Hathaway cut stake by 13% in Q4", "url": ""},
+        ],
+        "web_bull_signals": [
+            {"title": f"{ticker} AI features to drive next multi-year hardware supercycle", "snippet": "Analysts estimate 600M iPhones eligible for upgrade", "url": ""},
+            {"title": f"{ticker} services flywheel accelerating — 1B paid subscriptions", "snippet": "High-margin recurring revenue insulates against hardware cycles", "url": ""},
+            {"title": f"{ticker} buyback machine — $110B authorized", "snippet": "Share count declining 3% annually boosting EPS", "url": ""},
+        ],
+        "web_bear_signals": [
+            {"title": f"{ticker} China risk underestimated by Wall Street", "snippet": "Huawei comeback threatens premium segment share", "url": ""},
+            {"title": f"EU Digital Markets Act could cost {ticker} billions", "snippet": "App Store changes already reducing services revenue growth rate", "url": ""},
+            {"title": f"Hardware saturation: average iPhone replacement cycle now 4.5 years", "snippet": "Upgrade cycle elongation structural not cyclical", "url": ""},
+        ],
+        "marketwatch_news": [
+            {"title": f"{ticker} hits services milestone but hardware remains a concern", "summary": ""},
+            {"title": f"Analysts divided on {ticker}'s AI monetization timeline", "summary": ""},
+        ],
+        "google_finance_news": [
+            {"title": f"{ticker} reports Q2 results, beats on EPS"},
+            {"title": f"Goldman Sachs reiterates Buy on {ticker}"},
+        ],
+        "industry_context": [
+            {"title": "Consumer electronics sector faces macro headwinds in 2026", "snippet": "Rising consumer debt and slowing discretionary spending", "url": ""},
+            {"title": "AI device supercycle expected H2 2026 — analysts", "snippet": "On-device AI features require hardware upgrades", "url": ""},
+        ],
+        "summary": {"sources_accessed": 3, "total_data_points": 20},
+    }
+
+
 def mock_news(ticker: str) -> dict:
     return {
         "yahoo_finance_headlines": [

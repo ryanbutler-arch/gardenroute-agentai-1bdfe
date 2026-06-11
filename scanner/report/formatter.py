@@ -140,6 +140,50 @@ def print_report(result: dict[str, Any]) -> None:
     ))
 
     # ------------------------------------------------------------------
+    # Deep Research Brief
+    # ------------------------------------------------------------------
+    research = result.get("research_brief", {})
+    if research and not research.get("error"):
+        tone = research.get("sentiment_tone", "neutral")
+        tone_color = (
+            "green" if "bullish" in tone
+            else "red" if "bearish" in tone
+            else "yellow"
+        )
+        verified = research.get("verified_facts", [])
+        top_finding = research.get("most_important_finding", "")
+        bull_sigs = research.get("bull_signals_found", [])
+        bear_sigs = research.get("bear_signals_found", [])
+        contradictions = research.get("contradictions", [])
+
+        research_text = (
+            f"[bold]Web Sentiment:[/bold] [{tone_color}]{tone}[/{tone_color}]\n"
+            f"[bold]Key Finding:[/bold] {top_finding}\n"
+        )
+        if verified:
+            research_text += "\n[bold]Verified Facts (cross-confirmed):[/bold]\n"
+            research_text += "\n".join(f"  [green]✓[/green] {f}" for f in verified[:5])
+        if bull_sigs:
+            research_text += "\n[bold]Bull Signals:[/bold]\n"
+            research_text += "\n".join(f"  [green]+[/green] {s}" for s in bull_sigs[:3])
+        if bear_sigs:
+            research_text += "\n[bold]Bear Signals:[/bold]\n"
+            research_text += "\n".join(f"  [red]-[/red] {s}" for s in bear_sigs[:3])
+        if contradictions:
+            research_text += "\n[bold]Contradictions Flagged:[/bold]\n"
+            research_text += "\n".join(f"  [yellow]⚠[/yellow] {c}" for c in contradictions[:2])
+
+        dq = research.get("data_quality_note", "")
+        if dq:
+            research_text += f"\n\n[dim]{dq}[/dim]"
+
+        console.print(Panel(
+            research_text,
+            title=f"[bold]Deep Research Brief  ·  {research.get('sources_used', '?')} sources[/bold]",
+            border_style="cyan",
+        ))
+
+    # ------------------------------------------------------------------
     # Technical Snapshot
     # ------------------------------------------------------------------
     tech_table = Table(box=box.SIMPLE, expand=True)

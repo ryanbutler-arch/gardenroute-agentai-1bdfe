@@ -28,11 +28,25 @@ Only output valid JSON, no markdown fences."""
 
 
 def analyze(ticker: str, data_package: dict) -> dict:
+    research = data_package.get("deep_research", {})
+    research_section = ""
+    if research:
+        research_section = f"""
+=== DEEP RESEARCH BRIEF (verified web findings) ===
+Sentiment tone: {research.get('sentiment_tone', 'N/A')}
+Most important finding: {research.get('most_important_finding', 'N/A')}
+Verified facts: {research.get('verified_facts', [])}
+Bull signals found: {research.get('bull_signals_found', [])}
+Bear signals found: {research.get('bear_signals_found', [])}  ← also consider these as risks
+Industry/macro context: {research.get('industry_macro_context', 'N/A')}
+"""
+
     prompt = f"""Analyze {ticker} and build the strongest honest bull case.
 
 DATA PACKAGE:
-{format_data_for_prompt(data_package)}
-
+{format_data_for_prompt({k: v for k, v in data_package.items() if k != 'deep_research'})}
+{research_section}
+Incorporate the deep research findings, especially verified facts and bull signals.
 Return valid JSON only."""
 
     raw = call_agent(SYSTEM_PROMPT, prompt)

@@ -16,7 +16,8 @@ from scanner.data.mock_data import (
 )
 from scanner.analysis import technical as tech_analysis
 from scanner.analysis import fundamental as fund_analysis
-from scanner.agents import bull_agent, bear_agent, challenge_agent, synthesis_agent
+from scanner.agents import bull_agent, bear_agent, challenge_agent, synthesis_agent, research_agent
+from scanner.data.mock_data import mock_research
 
 console = Console()
 
@@ -58,6 +59,15 @@ def analyze_demo(ticker: str = "DEMO") -> dict[str, Any]:
     technical = _step("Running technical analysis", tech_analysis.run, price_history)
     fundamental_scored = _step("Running fundamental scoring", fund_analysis.run, fundamentals)
 
+    console.print("\n[bold]Phase 2.5: Deep Web Research (Mock)[/bold]")
+    raw_research = mock_research(ticker)
+    console.print("  [green]✓[/green] Web research (mock — Finviz, DuckDuckGo, MarketWatch)")
+    research_brief = _step(
+        "Research Agent — verifying & synthesizing findings",
+        research_agent.analyze,
+        ticker, raw_research, fundamentals,
+    )
+
     data_package = {
         "ticker": ticker,
         "fundamentals": fundamentals,
@@ -71,6 +81,7 @@ def analyze_demo(ticker: str = "DEMO") -> dict[str, Any]:
             "yahoo_finance_headlines": news["yahoo_finance_headlines"],
             "sec_filings_count": news["sec_filings_count"],
         },
+        "deep_research": research_brief,
     }
 
     console.print("\n[bold]Phase 3: Multi-Agent Analysis[/bold]")
@@ -98,6 +109,7 @@ def analyze_demo(ticker: str = "DEMO") -> dict[str, Any]:
         "technical": technical,
         "fundamental_analysis": fundamental_scored,
         "options": options,
+        "research_brief": research_brief,
         "bull_case": bull,
         "bear_case": bear,
         "challenge_report": challenge,
